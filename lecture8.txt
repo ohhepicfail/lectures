@@ -1,0 +1,73 @@
+лишние запятые в макросе? в круглые скобки его, т.к. все, что внутри круглых скобок считается единым выражением.
+
+f[0] ((x > y) ? (printf ("YES"), 5) : (printf ("NO"), 10));  оператору запятая предписанно вычислять все, забивая на значения, кроме последнего
+if (a++, b++, a < b) {}
+
+ int main (int argc, const char * argv[])
+ {
+	if (argc <= 1)
+		return printf ("Usage ...", ...) , 1;
+ }
+ 
+ синтаксическую ошибку даст функция void
+ 
+ если что-то окружить круглыми скобками, то это что-то станет выражением. 
+ y = ({if (x > y) 5; else return 0;} , 1); // only for gcc
+ 
+ DEF_CMD( blabla, {push () , i += 2;}) <--- comma ->>>>  #define _ 	,
+ 
+ 
+  
+ 
+ #define PRINTF( fmt, var)		printf (fmt, var);
+ #define _						,
+ 
+ PRINTF( "%d %d %d", x _ y _ z)  
+ 
+ or
+ 
+  #define PRINTF( fmt, var)		printf (fmt, /* var */);
+  
+  PRINTF( "%d %d %d", /*/ x, y, z /*/)
+  
+  
+  or 
+  
+  #define PRINTF( fmt, ...)		printf (fmt, _VA_ARGS_);
+
+
+
+
+
+
+asm
+
+push -10
+pop ax
+push +10
+push ax
+ja
+push ax
+out
+push ax
+push ax
+mul
+out
+push ax
+push 1
+add
+pop ax
+jmp
+end  
+
+
+разные push для регистров и так далее 
+
+
+первая стадия - смечения вручную (ja 21 , jmp 3)
+вторая стадия - метки (: 1 , : 2) and (ja :2, jmp :1)
+заведем масси для асма и будем вписывать в него смешения метки(адрес), где метка - индекс
+и делаем два прохода
+третий проход - метки (stop: , next:)
+МЕТКА ВСТРЕЧАЕТСЯ ДВАЖДЫ
+

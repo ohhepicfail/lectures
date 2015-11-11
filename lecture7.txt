@@ -1,0 +1,122 @@
+enum COmmands
+{
+	cmd_PUSH = 1;
+	cmd_POP  = 2;
+	...
+	
+};
+
+
+struct CmdInfo
+{
+	int num;
+	const char * name;
+};
+
+
+const Cmdnfo Info[] = 
+		{ 
+			{cmd_PUSH, "PUSH"}, 
+			{cmd_PUSH, "PUSH"}, 
+			...
+		};
+		
+написать функцию, проверяющую отсортированность
+в асме поиском (пока линейный)
+
+
+if (stricmp (str, "PUSH") == 0) //см ниже (56)
+	fprintf (out, "%d", Cmd_PUSH);
+...
+
+
+
+
+
+//CmdList.h
+//DEF_CMD - define
+
+DEF_CMD (PUSH, 1, {StackPush (&stk, v);}) // во всех define  добавить трейтий параметр 
+DEF_CMD (POP, 2, {StackPush (&stk);})
+DEF_CMD (ADD, 3, {..pusd.. pop+pop..})
+...
+
+
+// asm.cpp
+
+#define DEF_CMP( name, num) cmd_##name = num,
+
+enum Commands
+{
+	#include "CmdList.h"
+	cmd_Last            // т.к. будет лишняя запятая из define
+};
+#undef DEF_CMD
+
+
+#define DEF_CMP( name, num) \
+		if (stricmp (str, #name) == 0) \
+			fprintf (out, "%d", Cmd_##name); \   // cmd_##name == num
+		else \
+		
+		#include "CmdList.h"
+		printf ("error..");
+ 
+
+ 
+ //CmdInfo
+ 
+ #define DEF__CMD( name, num ) \
+		{ cmd_##name, #name },
+		
+	const CmdInfo Info[] =
+	{
+		#include "CmdList.h"
+		{}
+	};
+	#undef DEF_CMD
+	
+	
+//processor
+switch ( cmd[i])
+{
+#define DEF_CMD (name, num, code) \
+	case num: {code} break;
+	
+#include "CmdList.h"
+#undef DEF_CMD
+	default : ..... break;
+}
+
+
+make
+
+
+run.bat
+	asm\asm  %1.asm
+	proc\cpu %1.bin
+	
+you.bat
+@echo cam %1
+
+
+посмотреть процы avr
+запилить регистры ax,bx,cx,dx,...
+
+храним программу в массиве
+
+если один кристал то ram внутри
+если два, то указатель на ram, а память за пределами проца
+функции - место в коде прыгает на другое и возвращается обратно -- адреса возвратов (второй стек)
+в итоге два стека: для вызовов и данных, регистры, оперативка 
+флаги
+флаг нуля  if (a - b == 0) .....
+	mov ax, a (в ах кладем а)
+	mov bx, b
+	sub ax, bx
+	jnz next (jump is not zero) (если разность не равна нулю, то переходим) (jmz лезет в регистр флагов и смотрит флаг нуля)
+	next: ... 
+	//ja, jb (больше а или б)
+
+регистры быстрого назначения можно гадить, остальные принято сохранять (о функциях)
+если функция возвращает значение, то она сохраняется в ах 
