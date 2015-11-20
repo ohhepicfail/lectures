@@ -1,0 +1,64 @@
+STACK:
+	pop
+	push
+	add
+	sub
+	mul
+	div
+	in   ---> in stack
+	out
+
+REGISTERS:
+	(mov)
+	push
+	pop
+	(inc (++), dec (--)) ---> dec ax
+
+CONTROLFLOW:
+	jmp
+	jne  (!=)
+	je (==)
+	(cmp) ---> cmp ax 0
+	( ja(>), jb(<), jna(>=), jnb(<=) )
+	call ()
+	ret
+
+
+с помощью меток прога зациклится или ругнется на двойную метку
+
+in
+pop ax
+call factorial
+pop ax          (5,6)
+call factorial
+out
+
+factorial: //v1 // i think that it isn't work right now
+dec ax
+push ax
+mul
+cmp ax
+jne factorial
+ret
+
+factorial:  //v2       ////// int fact (int x) {return (x <= 0) ? 1 : x * fact (x - 1);}
+cmp ax 0
+je zero
+push ax
+dec ax
+call factorial
+mul  (41)
+ret
+zero:
+push 1
+ret                                
+
+
+стек возврата
+call = jump (label) + push (label)
+ret = jump (pop)
+call push address of the next command 
+41-41-5 -->take 41 and jump on this address 
+
+в асме делаю комманда - адрес метки функции. В самой  программе переходим по адресу и кладем в стек возврата адрес следующей команды после функции.
+ret в асме просто номер. В программе достает попает адрес и переходит по нему.
